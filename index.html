@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TempMail - A temporary email address generator</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate temporary/disposable email addresses to use for other websites!">
+    <meta name="keywords" content="tempmail, TempMail, Temporary Email, generator, Temporary Email Generator">
+    <meta property="og:title" content="TempMail" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tempmail.lol/" />
+    <meta property="og:image" content="https://tempmail.lol/logo.png" />
+    <meta property="og:description" content="Generate temporary email addresses to reduce spam!" />
+    <meta property="og:site_name" content="TempMail.lol" />
+    
+    <meta name="apple-itunes-app" content="app-id=1632857148">
+    
+    <!--twitter stuff -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@tempmail_lol">
+    <meta name="twitter:title" content="TempMail.lol">
+    <meta name="twitter:description" content="Generate temporary email addresses to reduce spam!">
+    <meta name="twitter:creator" content="@tempmail_lol">
+    <meta name="twitter:image" content="https://tempmail.lol/logo.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&amp;display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/topnav.css">
+    <link rel="stylesheet" href="/css/topsec.css">
+    <link rel="stylesheet" href="/css/inbox.css">
+    <link rel="stylesheet" href="/css/bottomsec.css">
+    <link rel="stylesheet" href="/css/emailmodal.css">
+    <link rel="stylesheet" href="/css/ads.css">
+    <link rel="stylesheet" href="/css/switch.css">
+    
+    <link rel="icon" href="https://tempmail.lol/logo.png" type="image/png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HZ5HBWPCW2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        
+        gtag('config', 'G-HZ5HBWPCW2');
+    </script>
+    <script>
+        function onRushSwitch() {
+            const checked = document.getElementById("rush_mode").checked;
+            if(checked) {
+                localStorage.setItem("rush_mode", "true");
+            } else {
+                localStorage.setItem("rush_mode", "false");
+            }
+            localStorage.removeItem("emails");
+            localStorage.removeItem("address");
+            localStorage.removeItem("token");
+            localStorage.removeItem("creation_time");
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2561999092732135" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="mega_header">
+    <nav>
+        <div class="topnav" id="topnav">
+            <a href="/" class="active">TempMail</a>
+            <a href="/news/">News</a>
+            <a href="/contact.html">Contact</a>
+            <a href="/about.html">About</a>
+            <a href="https://discord.gg/GHapeHPWVS">Discord Server</a>
+            <a href="/custom.html">Custom Domains</a>
+            <a href="/pricing.html">Pricing</a>
+            <!-- <div class="tn-right">
+                <a onclick="login_popup()" class="premium_button_index">Login</a>
+                <a onclick="premium_popup()" class="premium_button_index">Premium</a>
+            </div> -->
+            <a href="javascript:void(0);" class="icon" onclick="topnav_resize()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+    </nav>
+    <section class="header">
+        <h1>
+            TempMail
+        </h1>
+    </section>
+    <div class="desc">
+        <!--stats will be populated by js-->
+        <p id="stats"></p>
+        <p>
+            Say goodbye to spam!  Generate temporary email addresses to use for other websites without giving away your real email address.
+        </p>
+        <p>
+            Notice: we have recently updated our <a href="https://bananacrumbs.us/terms-of-service">terms of service</a>.
+        </p>
+<!--         <p>
+            Notice: we have recently updated our <a href="/privacy-policy.html">privacy policy</a>.
+        </p> -->
+    </div>
+    <section class="email">
+        <div id="ab" style="display: none">
+        </div>
+        <input type="text" id="email_field" class="email_field" readonly>
+        <section class="">
+            <label for="rush_mode"><h3>Enable <a href="javascript:ca_info()">community addresses</a></h3></label>
+            <label class="switch">
+                <input type="checkbox" id="rush_mode" onclick="onRushSwitch()">
+                <span class="slider round"></span>
+                <script>
+                    const rush_mode = localStorage.getItem("rush_mode");
+                    if(rush_mode === "true") {
+                        document.getElementById("rush_mode").checked = true;
+                    }
+                </script>
+            </label>
+        </section>
+    </section>
+</div>
+<section class="email_buttons">
+    <button id="copy_button" class="button" onclick="copyToClipboard()">Copy</button>
+    <button id="regenerate_button" class="button" onclick="regenerate()">Reset</button>
+</section>
+<section class="inbox_container">
+    <table class="inbox" id="inbox_table">
+        <tr>
+            <th>From</th>
+            <th>Date Sent</th>
+            <th>Subject</th>
+        </tr>
+    </table>
+    <div class="waiting_container">
+        <h1 id="waiting">Waiting for emails</h1>
+    </div>
+    <div class="click_prompt" id="click_prompt">
+        <h1>Click to open an email.</h1>
+    </div>
+    <br>
+</section>
+<div id="email_modal" class="modal">
+    <div class="modal-content">
+        <h2 class="modal_subject_header">Subject:&nbsp;&nbsp;</h2>
+        <h2 id="modal_subject" class="modal_subject"></h2>
+        <span id="modal_close" class="close">&times;</span>
+        <iframe id="email_iframe" src=""></iframe>
+    </div>
+</div>
+<div id="premium_modal" class="modal">
+    <div class="modal-content">
+        <span id="premium_close" class="close">&times;</span>
+        <h1>TempMail Plus</h1>
+        <p>
+            
+            <br><br>
+            <a href="/pricing.html">Learn more</a>
+        </p>
+    </div>
+</div>
+<section class="about_ee">
+    <h1>What is TempMail?</h1>
+    <p>
+        TempMail is a temporary email address generator.  It generates temporary email addresses to use for other websites without giving away your real email address.
+        TempMail is also known as 10minutemail, fake email, burner email, and throwaway email.  Free Wi-Fi, forum owners, and websites require that
+        you signup with an email address before allowing you to access content.
+        <br><br>
+        Want to learn more?  Check out our <a href="/about.html">about</a> page and our <a href="/news/">blog page</a>.
+        <br><br>
+    </p>
+</section>
+<div class="mega_header center foot">
+    <p>
+        By using this site, you agree to the <a href="/privacy-policy.html">Privacy policy</a> and <a href="/terms-of-use.html">Terms of Use</a>.
+    </p>
+    <hr>
+    <p class="promos">
+        <a href="https://api.tempmail.lol/">Developer API</a> |
+        <a href="https://discord.gg/GHapeHPWVS">Discord Server</a> |
+        <a href="mailto:contact@bananacrumbs.us">Email</a> |
+        <a href="https://bananacrumbs.us/pubkey.txt">GPG Key</a> |
+        <a href="/pricing.html">TempMail Plus</a>
+    </p>
+    <hr>
+    <p property="dc:rights">Copyright &copy;
+        <span property="dc:dateCopyrighted">2023</span>
+        <span property="dc:publisher">BananaCrumbs, LLC.</span>
+        All Right Reserved.
+    </p>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+<script src="/js/topnav.js"></script>
+<script src="/js/index.js"></script>
+</html>
